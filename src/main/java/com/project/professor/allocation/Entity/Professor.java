@@ -1,4 +1,4 @@
-package com.project.professor.allocation.Entity;
+package com.project.professor.allocation.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +26,7 @@ public class Professor {
 
 	@ManyToOne
 	@JoinColumn(name = "department_id", nullable = false, insertable = false, updatable = false)
-	private Departament departament;
+	private Department department;
 
 	public Professor(Long id, String name, String cpf, Long departmentId) {
 		this.id = id;
@@ -67,12 +67,12 @@ public class Professor {
 		return departmentId;
 	}
 
-	public Departament getDepartament() {
-		return departament;
+	public Department getDepartament() {
+		return department;
 	}
 
-	public void setDepartament(Departament departament) {
-		this.departament = departament;
+	public void setDepartament(Department department) {
+		this.department = department;
 	}
 
 	public void setDepartmentId(Long departmentId) {
@@ -82,7 +82,7 @@ public class Professor {
 	@Override
 	public String toString() {
 		return "Professor [id=" + id + ", name=" + name + ", cpf=" + cpf + ", departmentId=" + departmentId
-				+ ", departament=" + departament + "]";
+				+ ", departament=" + department + "]";
 	}
 
 }

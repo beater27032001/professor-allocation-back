@@ -1,4 +1,4 @@
-package com.project.professor.allocation.Entity;
+package com.project.professor.allocation.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Departament {
+public class Department {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,13 +16,13 @@ public class Departament {
 	@Column(name = "name", unique = true, nullable = false)
 	private String name;
 
-	public Departament(Long id, String name) {
+	public Department(Long id, String name) {
 		this.id = id;
 		this.name = name;
 
 	}
 
-	public Departament() {
+	public Department() {
 		super();
 	}
 

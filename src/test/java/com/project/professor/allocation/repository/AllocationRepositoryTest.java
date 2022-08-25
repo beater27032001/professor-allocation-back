@@ -15,7 +15,6 @@ import org.springframework.test.context.TestPropertySource;
 
 import com.project.professor.allocation.entity.Allocation;
 
-
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)
@@ -32,6 +31,13 @@ public class AllocationRepositoryTest {
 		List<Allocation> AllAllocations = allocationRepository.findAll();
 		System.out.println(AllAllocations);
 	}
+	
+	@Test
+    public void findById() {
+        Long id = 1L;
+        Allocation allocation = allocationRepository.findById(id).orElse(null);
+        System.out.println(allocation);
+    }
 
 	@Test
 	public void create() throws ParseException {
@@ -65,8 +71,9 @@ public class AllocationRepositoryTest {
 	}
 
 	@Test
-	public void delete() {
-		allocationRepository.deleteById(1L);
+	public void deleteById() {
+		Long id = 1L;
+        allocationRepository.deleteById(id);
 	}
 
 	@Test

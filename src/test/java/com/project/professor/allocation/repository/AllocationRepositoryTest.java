@@ -1,7 +1,8 @@
 package com.project.professor.allocation.repository;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,8 @@ import com.project.professor.allocation.entity.Allocation;
 @Rollback(false)
 @TestPropertySource(locations = "classpath:application.properties")
 public class AllocationRepositoryTest {
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("HH:mmZ");
 
 	@Autowired
 	AllocationRepository allocationRepository;
@@ -31,28 +34,34 @@ public class AllocationRepositoryTest {
 	}
 
 	@Test
-	public void create() {
-		Allocation newAllocation = new Allocation();
-		newAllocation.setCourseId(1L);
-		newAllocation.setProfessorId(1L);
-		newAllocation.setDay(DayOfWeek.MONDAY);
-		Date start = new Date();
-		start.setTime(1000999);
-		newAllocation.setStart(start);
-		Date end = new Date();
-		end.setTime(1200999);
-		newAllocation.setEnd(end);
+	public void create() throws ParseException {
 
-		System.out.println(allocationRepository.save(newAllocation));
+		Allocation allocation = new Allocation();
+		allocation.setId(null);
+		allocation.setDay(DayOfWeek.SUNDAY);
+		allocation.setStart(sdf.parse("17:00-0300"));
+		allocation.setEnd(sdf.parse("18:00-0300"));
+		allocation.setProfessorId(2L);
+		allocation.setCourseId(3L);
+
+		allocation = allocationRepository.save(allocation);
+
+		System.out.println(allocation);
 	}
 
 	@Test
-	public void update() {
-		Allocation newAllocation = new Allocation();
-		newAllocation.setProfessorId(2L);
-		newAllocation.setId(1L);
+	public void update() throws ParseException {
+		Allocation allocation = new Allocation();
+		allocation.setId(3L);
+		allocation.setDay(DayOfWeek.MONDAY);
+		allocation.setStart(sdf.parse("19:00-0300"));
+		allocation.setEnd(sdf.parse("20:00-0300"));
+		allocation.setProfessorId(3L);
+		allocation.setCourseId(3L);
 
-		System.out.println(allocationRepository.save(newAllocation));
+		allocation = allocationRepository.save(allocation);
+
+		System.out.println(allocation);
 	}
 
 	@Test

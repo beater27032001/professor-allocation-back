@@ -51,6 +51,8 @@ public class ProfessorRepositoryTest {
 		Professor professor = new Professor();
 		professor.setName("José Paiva");
 		professor.setId(1L);
+		professor.setCpf("12345678921");
+		professor.setDepartmentId(1L);
 		professor = professorRepository.save(professor);
 
 		System.out.println(professor);

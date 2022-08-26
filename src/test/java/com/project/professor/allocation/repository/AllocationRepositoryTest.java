@@ -15,6 +15,8 @@ import org.springframework.test.context.TestPropertySource;
 
 import com.project.professor.allocation.entity.Allocation;
 
+
+
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)

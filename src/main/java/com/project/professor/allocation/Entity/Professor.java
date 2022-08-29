@@ -67,11 +67,11 @@ public class Professor {
 		return departmentId;
 	}
 
-	public Department getDepartament() {
+	public Department getDepartment() {
 		return department;
 	}
 
-	public void setDepartament(Department department) {
+	public void setDepartment(Department department) {
 		this.department = department;
 	}
 

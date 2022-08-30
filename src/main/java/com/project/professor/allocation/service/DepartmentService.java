@@ -40,6 +40,7 @@ public class DepartmentService {
 	public Department update(Department department) {
 		Long id = department.getId();
 		if (id != null && departmentRepository.existsById(id)) {
+			department = departmentRepository.save(department);
 			return department;
 		} else {
 			return null;

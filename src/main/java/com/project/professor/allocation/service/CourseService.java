@@ -40,6 +40,7 @@ public class CourseService {
 	public Course update(Course course) {
 		Long id = course.getId();
 		if (id != null && courseRepository.existsById(id)) {
+			course = courseRepository.save(course);
 			return course;
 		} else {
 			return null;

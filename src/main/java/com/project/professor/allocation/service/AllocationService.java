@@ -2,12 +2,16 @@ package com.project.professor.allocation.service;
 
 import java.util.List;
 
+import javax.management.ServiceNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import com.project.professor.allocation.entity.Allocation;
 import com.project.professor.allocation.entity.Course;
 import com.project.professor.allocation.entity.Professor;
 import com.project.professor.allocation.repository.AllocationRepository;
+import com.project.professor.allocation.service.exception.HasCollissionException;
+import com.project.professor.allocation.service.exception.TimeException;
 
 @Service
 public class AllocationService {
@@ -28,35 +32,58 @@ public class AllocationService {
 		return allocations;
 	}
 
-	public Allocation findById(Long id) {
-		return allocationRepository.findById(id).orElse(null);
+	// ex
+	public Allocation findById(Long id) throws ServiceNotFoundException {
+		Allocation allocation = allocationRepository.findById(id).orElse(null);
+		if (allocation != null) {
+			return allocation;
+		} else {
+			throw new ServiceNotFoundException("Allocation does not exist.");
+		}
 	}
 
-	public List<Allocation> findByProfessorId(Long professorId) {
-		return allocationRepository.findByProfessorId(professorId);
+	// ex
+	public List<Allocation> findByProfessorId(Long professorId) throws ServiceNotFoundException {
+		List<Allocation> allocation = allocationRepository.findByProfessorId(professorId);
+		if (allocation != null) {
+			return allocation;
+		} else {
+			throw new ServiceNotFoundException("Professor does not exist.");
+		}
 	}
 
-	public List<Allocation> findByCourseId(Long courseId) {
-		return allocationRepository.findByCourseId(courseId);
+	// ex
+	public List<Allocation> findByCourseId(Long courseId) throws ServiceNotFoundException {
+		List<Allocation> allocation = allocationRepository.findByCourseId(courseId);
+		if (allocation != null) {
+			return allocation;
+		} else {
+			throw new ServiceNotFoundException("Course does not exist.");
+		}
 	}
 
-	public Allocation create(Allocation allocation) {
+	public Allocation create(Allocation allocation) throws TimeException, HasCollissionException, ServiceNotFoundException {
 		allocation.setId(null);
 		return saveInternal(allocation);
 	}
 
-	public Allocation update(Allocation allocation) {
+	// ex
+	public Allocation update(Allocation allocation)
+			throws ServiceNotFoundException, TimeException, HasCollissionException {
 		Long id = allocation.getId();
 		if (id != null && allocationRepository.existsById(id)) {
 			return saveInternal(allocation);
 		} else {
-			return null;
+			throw new ServiceNotFoundException("Allocation does not exist.");
 		}
 	}
 
-	public void deleteById(Long id) {
+	// ex
+	public void deleteById(Long id) throws ServiceNotFoundException {
 		if (id != null && allocationRepository.existsById(id)) {
 			allocationRepository.deleteById(id);
+		} else {
+			throw new ServiceNotFoundException("Allocation does not exist.");
 		}
 	}
 
@@ -64,7 +91,8 @@ public class AllocationService {
 		allocationRepository.deleteAllInBatch();
 	}
 
-	private Allocation saveInternal(Allocation allocation) {
+	// ex
+	private Allocation saveInternal(Allocation allocation) throws TimeException, HasCollissionException, ServiceNotFoundException {
 		if (!isEndHourGreaterThanStartHour(allocation) || hasCollision(allocation)) {
 			throw new RuntimeException();
 		} else {
@@ -84,12 +112,23 @@ public class AllocationService {
 		}
 	}
 
-	boolean isEndHourGreaterThanStartHour(Allocation allocation) {
-		return allocation != null && allocation.getStart() != null && allocation.getEnd() != null
-				&& allocation.getEnd().compareTo(allocation.getStart()) > 0;
+	// ex
+	boolean isEndHourGreaterThanStartHour(Allocation allocation) throws TimeException {
+		boolean isEndHourGreaterThanStartHour = true;
+		if (allocation != null && allocation.getStart() != null && allocation.getEnd() != null
+				&& allocation.getEnd().compareTo(allocation.getStart()) < 0) {
+			throw new TimeException("The start time must be less than the end time.");
+		} else {
+			return isEndHourGreaterThanStartHour;
+		}
+		/*
+		 * return allocation != null && allocation.getStart() != null &&
+		 * allocation.getEnd() != null &&
+		 * allocation.getEnd().compareTo(allocation.getStart()) > 0;
+		 */
 	}
 
-	boolean hasCollision(Allocation newAllocation) {
+	boolean hasCollision(Allocation newAllocation) throws HasCollissionException {
 		boolean hasCollision = false;
 
 		List<Allocation> currentAllocations = allocationRepository.findByProfessorId(newAllocation.getProfessorId());
@@ -97,7 +136,7 @@ public class AllocationService {
 		for (Allocation currentAllocation : currentAllocations) {
 			hasCollision = hasCollision(currentAllocation, newAllocation);
 			if (hasCollision) {
-				break;
+				throw new HasCollissionException("The professor is already allocated at this time of day.");
 			}
 		}
 

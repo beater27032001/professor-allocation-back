@@ -56,11 +56,10 @@ public class Allocation {
 		this.end = end;
 		this.courseId = courseId;
 		this.professorId = professorId;
-
 	}
 
 	public Allocation() {
-
+		super();
 	}
 
 	public Long getId() {
@@ -134,4 +133,3 @@ public class Allocation {
 	}
 
 }
-

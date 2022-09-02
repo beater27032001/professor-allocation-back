@@ -8,8 +8,6 @@ import com.project.professor.allocation.entity.Department;
 import com.project.professor.allocation.entity.Professor;
 import com.project.professor.allocation.repository.ProfessorRepository;
 
-
-
 @Service
 public class ProfessorService {
 

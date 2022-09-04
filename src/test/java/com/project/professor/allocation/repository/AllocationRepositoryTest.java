@@ -15,14 +15,12 @@ import org.springframework.test.context.TestPropertySource;
 
 import com.project.professor.allocation.entity.Allocation;
 
-
-
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)
 @TestPropertySource(locations = "classpath:application.properties")
 public class AllocationRepositoryTest {
-	
+
 	SimpleDateFormat sdf = new SimpleDateFormat("HH:mmZ");
 
 	@Autowired
@@ -33,13 +31,13 @@ public class AllocationRepositoryTest {
 		List<Allocation> AllAllocations = allocationRepository.findAll();
 		System.out.println(AllAllocations);
 	}
-	
+
 	@Test
-    public void findById() {
-        Long id = 1L;
-        Allocation allocation = allocationRepository.findById(id).orElse(null);
-        System.out.println(allocation);
-    }
+	public void findById() {
+		Long id = 1L;
+		Allocation allocation = allocationRepository.findById(id).orElse(null);
+		System.out.println(allocation);
+	}
 
 	@Test
 	public void create() throws ParseException {
@@ -50,7 +48,7 @@ public class AllocationRepositoryTest {
 		allocation.setStart(sdf.parse("17:00-0300"));
 		allocation.setEnd(sdf.parse("18:00-0300"));
 		allocation.setProfessorId(2L);
-		allocation.setCourseId(3L);
+		allocation.setCourseId(1L);
 
 		allocation = allocationRepository.save(allocation);
 
@@ -75,7 +73,7 @@ public class AllocationRepositoryTest {
 	@Test
 	public void deleteById() {
 		Long id = 1L;
-        allocationRepository.deleteById(id);
+		allocationRepository.deleteById(id);
 	}
 
 	@Test

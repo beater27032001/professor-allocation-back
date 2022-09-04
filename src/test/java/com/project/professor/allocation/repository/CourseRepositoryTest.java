@@ -38,7 +38,7 @@ public class CourseRepositoryTest {
 	@Test
 	public void create() {
 		Course course = new Course();
-		course.setName("Physics");
+		course.setName("Bio");
 		course = courseRepository.save(course);
 		System.out.println(course);
 	}

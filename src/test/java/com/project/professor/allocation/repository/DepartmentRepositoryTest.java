@@ -47,8 +47,8 @@ public class DepartmentRepositoryTest {
 	@Test
 	public void update() {
 		Department department = new Department();
-		department.setName("Bio Department");
-		department.setId(5L);
+		department.setName("History Department");
+		department.setId(2L);
 		department = departmentRepository.save(department);
 
 		System.out.println(department);
@@ -56,7 +56,7 @@ public class DepartmentRepositoryTest {
 
 	@Test
 	public void deleteById() {
-		Long id = 1L;
+		Long id = 3L;
 		departmentRepository.deleteById(id);
 	}
 

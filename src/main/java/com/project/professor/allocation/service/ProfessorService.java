@@ -1,4 +1,4 @@
-package com.project.professor.allocation.service;
+	package com.project.professor.allocation.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +29,6 @@ public class ProfessorService {
 	public List<Professor> findByNameContaining(String name) {
 		List<Professor> professor = professorRepository.findByNameContaining(name);
 		return professor;
-
 	}
 
 	public Optional<Professor> findByCpf(String cpf) {

@@ -30,7 +30,7 @@ public class ProfessorRepositoryTest {
 
 	@Test
 	public void findById() {
-		Long id = 1L;
+		Long id = 2L;
 		Professor professor = professorRepository.findById(id).orElse(null);
 
 		System.out.println(professor);
@@ -39,8 +39,8 @@ public class ProfessorRepositoryTest {
 	@Test
 	public void create() {
 		Professor professor = new Professor();
-		professor.setName("João Gabriel");
-		professor.setCpf("12345678920");
+		professor.setName("Carlos Luiz");
+		professor.setCpf("78932198763");
 		professor.setDepartmentId(6L);
 		professor = professorRepository.save(professor);
 

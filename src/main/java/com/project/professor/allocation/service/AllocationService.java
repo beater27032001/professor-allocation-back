@@ -9,7 +9,6 @@ import com.project.professor.allocation.entity.Course;
 import com.project.professor.allocation.entity.Professor;
 import com.project.professor.allocation.repository.AllocationRepository;
 import com.project.professor.allocation.service.exception.HasCollissionException;
-import com.project.professor.allocation.service.exception.TimeException;
 
 @Service
 public class AllocationService {
@@ -45,12 +44,12 @@ public class AllocationService {
 		return courseAllocation;
 	}
 
-	public Allocation create(Allocation allocation) throws TimeException, HasCollissionException {
+	public Allocation create(Allocation allocation) throws HasCollissionException {
 		allocation.setId(null);
 		return saveInternal(allocation);
 	}
 
-	public Allocation update(Allocation allocation) throws TimeException, HasCollissionException {
+	public Allocation update(Allocation allocation) throws HasCollissionException {
 		Long id = allocation.getId();
 		if (id != null && allocationRepository.existsById(id)) {
 			return saveInternal(allocation);
@@ -69,7 +68,7 @@ public class AllocationService {
 		allocationRepository.deleteAllInBatch();
 	}
 
-	private Allocation saveInternal(Allocation allocation) throws TimeException, HasCollissionException {
+	private Allocation saveInternal(Allocation allocation) throws HasCollissionException {
 		if (!isEndHourGreaterThanStartHour(allocation) || hasCollision(allocation)) {
 			throw new HasCollissionException();
 		} else {
@@ -89,19 +88,9 @@ public class AllocationService {
 		}
 	}
 
-	boolean isEndHourGreaterThanStartHour(Allocation allocation) throws TimeException {
-		boolean isEndHourGreaterThanStartHour = true;
-		if (allocation != null && allocation.getStart() != null && allocation.getEnd() != null
-				&& allocation.getEnd().compareTo(allocation.getStart()) < 0) {
-			throw new TimeException();
-		} else {
-			return isEndHourGreaterThanStartHour;
-		}
-		/*
-		 * return allocation != null && allocation.getStart() != null &&
-		 * allocation.getEnd() != null &&
-		 * allocation.getEnd().compareTo(allocation.getStart()) > 0;
-		 */
+	boolean isEndHourGreaterThanStartHour(Allocation allocation) {
+		return allocation != null && allocation.getStart() != null && allocation.getEnd() != null
+				&& allocation.getEnd().compareTo(allocation.getStart()) > 0;
 	}
 
 	boolean hasCollision(Allocation newAllocation) {

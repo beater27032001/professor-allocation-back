@@ -2,8 +2,6 @@ package com.project.professor.allocation.service;
 
 import java.util.List;
 
-import javax.management.ServiceNotFoundException;
-
 import org.springframework.stereotype.Service;
 
 import com.project.professor.allocation.entity.Course;
@@ -22,23 +20,15 @@ public class CourseService {
 		List<Course> courses = courseRepository.findAll();
 		return courses;
 	}
-	// ex
-	public List<Course> findByNameContaining(String name) throws ServiceNotFoundException {
+
+	public List<Course> findByNameContaining(String name) {
 		List<Course> courses = courseRepository.findByNameContaining(name);
-		if (courses.size() != 0) {
-			return courses;
-		} else {
-			throw new ServiceNotFoundException("Course does not exist.");
-		}
+		return courses;
 	}
-	// ex
-	public Course findById(Long id) throws ServiceNotFoundException {
-		Course course = courseRepository.findById(id).orElse(null);
-		if (course != null) {
-			return course;
-		} else {
-			throw new ServiceNotFoundException("Course does not exist.");
-		}
+
+	public Course findById(Long id) {
+		Course Course = courseRepository.findById(id).orElse(null);
+		return Course;
 	}
 
 	public Course create(Course course) {
@@ -46,22 +36,19 @@ public class CourseService {
 		course = courseRepository.save(course);
 		return course;
 	}
-	// ex
-	public Course update(Course course) throws ServiceNotFoundException {
+
+	public Course update(Course course) {
 		Long id = course.getId();
 		if (id != null && courseRepository.existsById(id)) {
-			course = courseRepository.save(course);
-			return course;
+			return courseRepository.save(course);
 		} else {
-			throw new ServiceNotFoundException("Course does not exist.");
+			return null;
 		}
 	}
-	// ex
-	public void deleteById(Long id) throws ServiceNotFoundException {
+
+	public void deleteById(Long id) {
 		if (id != null && courseRepository.existsById(id)) {
 			courseRepository.deleteById(id);
-		} else {
-			throw new ServiceNotFoundException("Course does not exist.");
 		}
 	}
 

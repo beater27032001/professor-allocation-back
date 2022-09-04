@@ -2,8 +2,6 @@ package com.project.professor.allocation.service;
 
 import java.util.List;
 
-import javax.management.ServiceNotFoundException;
-
 import org.springframework.stereotype.Service;
 
 import com.project.professor.allocation.entity.Allocation;
@@ -32,58 +30,38 @@ public class AllocationService {
 		return allocations;
 	}
 
-	// ex
-	public Allocation findById(Long id) throws ServiceNotFoundException {
+	public Allocation findById(Long id) {
 		Allocation allocation = allocationRepository.findById(id).orElse(null);
-		if (allocation != null) {
-			return allocation;
-		} else {
-			throw new ServiceNotFoundException("Allocation does not exist.");
-		}
+		return allocation;
 	}
 
-	// ex
-	public List<Allocation> findByProfessorId(Long professorId) throws ServiceNotFoundException {
-		List<Allocation> allocation = allocationRepository.findByProfessorId(professorId);
-		if (allocation != null) {
-			return allocation;
-		} else {
-			throw new ServiceNotFoundException("Professor does not exist.");
-		}
+	public List<Allocation> findByProfessorId(Long professorId) {
+		List<Allocation> profAllocation = allocationRepository.findByProfessorId(professorId);
+		return profAllocation;
 	}
 
-	// ex
-	public List<Allocation> findByCourseId(Long courseId) throws ServiceNotFoundException {
-		List<Allocation> allocation = allocationRepository.findByCourseId(courseId);
-		if (allocation != null) {
-			return allocation;
-		} else {
-			throw new ServiceNotFoundException("Course does not exist.");
-		}
+	public List<Allocation> findByCourseId(Long courseId) {
+		List<Allocation> courseAllocation = allocationRepository.findByCourseId(courseId);
+		return courseAllocation;
 	}
 
-	public Allocation create(Allocation allocation) throws TimeException, HasCollissionException, ServiceNotFoundException {
+	public Allocation create(Allocation allocation) throws TimeException, HasCollissionException {
 		allocation.setId(null);
 		return saveInternal(allocation);
 	}
 
-	// ex
-	public Allocation update(Allocation allocation)
-			throws ServiceNotFoundException, TimeException, HasCollissionException {
+	public Allocation update(Allocation allocation) throws TimeException, HasCollissionException {
 		Long id = allocation.getId();
 		if (id != null && allocationRepository.existsById(id)) {
 			return saveInternal(allocation);
 		} else {
-			throw new ServiceNotFoundException("Allocation does not exist.");
+			return null;
 		}
 	}
 
-	// ex
-	public void deleteById(Long id) throws ServiceNotFoundException {
+	public void deleteById(Long id) {
 		if (id != null && allocationRepository.existsById(id)) {
 			allocationRepository.deleteById(id);
-		} else {
-			throw new ServiceNotFoundException("Allocation does not exist.");
 		}
 	}
 
@@ -91,10 +69,9 @@ public class AllocationService {
 		allocationRepository.deleteAllInBatch();
 	}
 
-	// ex
-	private Allocation saveInternal(Allocation allocation) throws TimeException, HasCollissionException, ServiceNotFoundException {
+	private Allocation saveInternal(Allocation allocation) throws TimeException, HasCollissionException {
 		if (!isEndHourGreaterThanStartHour(allocation) || hasCollision(allocation)) {
-			throw new RuntimeException();
+			throw new HasCollissionException();
 		} else {
 
 			Allocation allocationSaved = allocationRepository.save(allocation);
@@ -112,12 +89,11 @@ public class AllocationService {
 		}
 	}
 
-	// ex
 	boolean isEndHourGreaterThanStartHour(Allocation allocation) throws TimeException {
 		boolean isEndHourGreaterThanStartHour = true;
 		if (allocation != null && allocation.getStart() != null && allocation.getEnd() != null
 				&& allocation.getEnd().compareTo(allocation.getStart()) < 0) {
-			throw new TimeException("The start time must be less than the end time.");
+			throw new TimeException();
 		} else {
 			return isEndHourGreaterThanStartHour;
 		}
@@ -128,7 +104,7 @@ public class AllocationService {
 		 */
 	}
 
-	boolean hasCollision(Allocation newAllocation) throws HasCollissionException {
+	boolean hasCollision(Allocation newAllocation) {
 		boolean hasCollision = false;
 
 		List<Allocation> currentAllocations = allocationRepository.findByProfessorId(newAllocation.getProfessorId());
@@ -136,7 +112,7 @@ public class AllocationService {
 		for (Allocation currentAllocation : currentAllocations) {
 			hasCollision = hasCollision(currentAllocation, newAllocation);
 			if (hasCollision) {
-				throw new HasCollissionException("The professor is already allocated at this time of day.");
+				break;
 			}
 		}
 

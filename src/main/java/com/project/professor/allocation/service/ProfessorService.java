@@ -1,8 +1,7 @@
 package com.project.professor.allocation.service;
 
 import java.util.List;
-
-import javax.management.ServiceNotFoundException;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -23,68 +22,49 @@ public class ProfessorService {
 	}
 
 	public List<Professor> findAll() {
-		List<Professor> departments = professorRepository.findAll();
-		return departments;
+		List<Professor> professor = professorRepository.findAll();
+		return professor;
 	}
 
-	// ex
-	public List<Professor> findByNameContaining(String name) throws ServiceNotFoundException {
-		List<Professor> departments = professorRepository.findByNameContaining(name);
-		if (departments.size() != 0) {
-			return departments;
-		} else {
-			throw new ServiceNotFoundException("Professor does not exist.");
-		}
+	public List<Professor> findByNameContaining(String name) {
+		List<Professor> professor = professorRepository.findByNameContaining(name);
+		return professor;
 
 	}
-	// ex
-	public Professor findByCpf(String cpf) throws ServiceNotFoundException {
-		Professor professor = professorRepository.findByCpf(cpf).orElse(null);
-		if(professor != null) {
-			return professor;
-		}else {
-			throw new ServiceNotFoundException("Cpf does not exist.");
-		}
+
+	public Optional<Professor> findByCpf(String cpf) {
+		Optional<Professor> professor = professorRepository.findByCpf(cpf);
+		return professor;
 	}
-	// ex
-	public List<Professor> findByDepartmentId(Long departmentId) throws ServiceNotFoundException {
-		List<Professor> departments = professorRepository.findByDepartmentId(departmentId);
-		if (departments.size() != 0) {
-			return departments;
-		} else {
-			throw new ServiceNotFoundException("Department does not exist.");
-		}
+
+	public List<Professor> findByDepartmentId(Long departmentId) {
+		List<Professor> professors = professorRepository.findByDepartmentId(departmentId);
+		return professors;
 	}
-	// ex
-	public Professor findById(Long id) throws ServiceNotFoundException {
+
+	public Professor findById(Long id) {
 		Professor professor = professorRepository.findById(id).orElse(null);
-		if (professor != null) {
-			return professor;
-		} else {
-			throw new ServiceNotFoundException("Professor does not exist.");
-		}
+		return professor;
 	}
 
-	public Professor create(Professor professor) throws ServiceNotFoundException {
+	public Professor create(Professor professor) {
 		professor.setId(null);
 		Professor prof = saveInternal(professor);
 		return prof;
 	}
 
-	public Professor update(Professor professor) throws ServiceNotFoundException {
+	public Professor update(Professor professor) {
 		Long id = professor.getId();
 		if (id != null && professorRepository.existsById(id)) {
 			return saveInternal(professor);
 		} else {
-			throw new ServiceNotFoundException("Professor does not exist.");
+			return null;
 		}
 	}
 
-	public void deleteById(Long id) throws ServiceNotFoundException {
+	public void deleteById(Long id) {
 		if (id != null && professorRepository.existsById(id)) {
 			professorRepository.deleteById(id);
-		}else {
-			throw new ServiceNotFoundException("Professor does not exist.");
 		}
 	}
 
@@ -92,7 +72,7 @@ public class ProfessorService {
 		professorRepository.deleteAllInBatch();
 	}
 
-	public Professor saveInternal(Professor professor) throws ServiceNotFoundException {
+	public Professor saveInternal(Professor professor) {
 
 		Long dptId = professor.getDepartmentId();
 		Department dpt = departmentService.findById(dptId);

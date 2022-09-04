@@ -2,8 +2,6 @@ package com.project.professor.allocation.service;
 
 import java.util.List;
 
-import javax.management.ServiceNotFoundException;
-
 import org.springframework.stereotype.Service;
 
 import com.project.professor.allocation.entity.Department;
@@ -23,23 +21,14 @@ public class DepartmentService {
 		return departments;
 	}
 
-	// ex
-	public List<Department> findByNameContaining(String name) throws ServiceNotFoundException {
-		List<Department> departments = departmentRepository.findByNameContaining(name);
-		if (departments.size() != 0) {
-			return departments;
-		} else {
-			throw new ServiceNotFoundException("Department does not exist.");
-		}
+	public List<Department> findByNameContaining(String name) {
+		List<Department> department = departmentRepository.findByNameContaining(name);
+		return department;
 	}
-	// ex
-	public Department findById(Long id) throws ServiceNotFoundException {
+
+	public Department findById(Long id) {
 		Department department = departmentRepository.findById(id).orElse(null);
-		if (department != null) {
-			return department;
-		} else {
-			throw new ServiceNotFoundException("Department does not exist.");
-		}
+		return department;
 	}
 
 	public Department create(Department department) {
@@ -47,22 +36,20 @@ public class DepartmentService {
 		department = departmentRepository.save(department);
 		return department;
 	}
-	// ex
-	public Department update(Department department) throws ServiceNotFoundException {
+
+	public Department update(Department department) {
 		Long id = department.getId();
 		if (id != null && departmentRepository.existsById(id)) {
-			department = departmentRepository.save(department);
-			return department;
+			department.setId(id);
+			return departmentRepository.save(department);
 		} else {
-			throw new ServiceNotFoundException("Department does not exist.");
+			return null;
 		}
 	}
-	// ex
-	public void deleteById(Long id) throws ServiceNotFoundException {
+
+	public void deleteById(Long id) {
 		if (id != null && departmentRepository.existsById(id)) {
 			departmentRepository.deleteById(id);
-		} else {
-			throw new ServiceNotFoundException("Department does not exist.");
 		}
 	}
 

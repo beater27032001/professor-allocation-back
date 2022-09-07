@@ -1,6 +1,7 @@
 package com.project.professor.allocation.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -69,7 +70,7 @@ public class ProfessorController {
 		}
 	}
 	
-	@ApiOperation(value = "Find professors by department")
+	@ApiOperation(value = "Find professors by department id")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "OK"),
 		@ApiResponse(code = 400, message = "Bad Request")
@@ -80,6 +81,18 @@ public class ProfessorController {
 		List<Professor> professors = professorService.findByDepartmentId(id);
 		return new ResponseEntity<>(professors, HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "Find professors by cpf")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Bad Request")
+    })
+    @GetMapping(path = "/{professor_cpf}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Optional<Professor>> findByCpf(@PathVariable(name = "professor_cpf") String cpf) {
+		Optional<Professor> professors = professorService.findByCpf(cpf);
+        return new ResponseEntity<>(professors, HttpStatus.OK);
+    }
 	
 	@ApiOperation(value = "Create a professor")
 	@ApiResponses({

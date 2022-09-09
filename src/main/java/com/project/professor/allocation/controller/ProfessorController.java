@@ -74,9 +74,9 @@ public class ProfessorController {
 
 	@ApiOperation(value = "Find professors by cpf")
 	@ApiResponses({ @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request") })
-	@GetMapping(path = "/{professor}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/professor/cpf/{professor_cpf}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Professor> findByCpf(@PathVariable(name = "professor") String cpf) {
+	public ResponseEntity<Professor> findByCpf(@PathVariable(name = "professor_cpf") String cpf) {
 		Professor professor = professorService.findByCpf(cpf);
 		if (professor == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

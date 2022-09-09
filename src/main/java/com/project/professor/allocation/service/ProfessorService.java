@@ -1,8 +1,6 @@
 package com.project.professor.allocation.service;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
 import com.project.professor.allocation.entity.Department;
@@ -31,8 +29,8 @@ public class ProfessorService {
 		return professor;
 	}
 
-	public Optional<Professor> findByCpf(String cpf) {
-		Optional<Professor> professor = professorRepository.findByCpf(cpf);
+	public Professor findByCpf(String cpf) {
+		Professor professor = professorRepository.findByCpf(cpf);
 		return professor;
 	}
 

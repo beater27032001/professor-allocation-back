@@ -1,8 +1,6 @@
 package com.project.professor.allocation.service;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,7 +29,7 @@ public class ProfessorServiceTest {
 
 	@Test
 	public void findByCpf() {
-		Optional<Professor> professor = professorService.findByCpf("13337474462");
+		Professor professor = professorService.findByCpf("13337474462");
 		System.out.println(professor);
 	}
 

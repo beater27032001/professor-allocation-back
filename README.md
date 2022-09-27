@@ -1,3 +1,21 @@
-# professor-allocation
+## Olá Dev!
+<br>
 
-Projeto da disciplina de Backend com um intuito de criar um backend para um site de departamento
+### Criação do Backend de um site estilo de uma universidade. Este projeto aconteceu durante as aulas do DeepCode, curso oferecido pela Qualiti Innovative Learning.
+
+<br>
+
+> ✨ Preview:
+
+<br>
+
+![Preview do projeto](/Preview/Preview.png)
+
+<br>
+
+> 🛠️ Ferramentas:
+
+- JAVA;
+- MYSQL;
+- SWAGGER;
+- GIT e GITHUB.

@@ -5,14 +5,6 @@
 
 <br>
 
-> ✨ Preview:
-
-<br>
-
-![Preview do projeto](/Preview/Preview.png)
-
-<br>
-
 > 🛠️ Ferramentas:
 
 - JAVA;
